@@ -72,49 +72,54 @@ module Repository
                           some directory with same name exists already")
       end
 
-      ga_repo = Gitolite::GitoliteAdmin.new(
-        MarkusConfigurator.markus_config_repository_storage +
-          '/gitolite-admin', GITOLITE_SETTINGS)
-
-      # Bring the repo up to date
-      ga_repo.reload!
-
-      # Grab the gitolite admin repo config
-      conf = ga_repo.config
+      # ga_repo = Gitolite::GitoliteAdmin.new(
+      #   MarkusConfigurator.markus_config_repository_storage +
+      #     '/gitolite-admin', GITOLITE_SETTINGS)
+      #
+      # # Bring the repo up to date
+      # ga_repo.reload!
+      #
+      # # Grab the gitolite admin repo config
+      # conf = ga_repo.config
+      #
+      # repo_name = File.basename(connect_string.split('/').last)
+      #
+      # # Grab the repo in question, if it does not exist, create it
+      # repo = ga_repo.config.get_repo(repo_name)
+      # if repo.nil?
+      #   # Generate new repo since this repo hasn't been created yet
+      #   repo = Gitolite::Config::Repo.new(repo_name)
+      # end
+      #
+      # # Add permissions for git user
+      # repo.add_permission('RW+', '', 'vagrant')
+      #
+      # # Add the repo to the gitolite admin config
+      # conf.add_repo(repo)
+      #
+      # # Readd the 'git' public key to the gitolite admin repo after changes
+      # admin_key = Gitolite::SSHKey.from_file(
+      #   GITOLITE_SETTINGS[:public_key])
+      # ga_repo.add_key(admin_key)
+      #
+      # # Stage and push the changes to the gitolite admin repo
+      # ga_repo.save_and_apply
 
       repo_name = File.basename(connect_string.split('/').last)
+      remote_path = File.join MarkusConfigurator.markus_config_repository_storage,
+                              'remotes',
+                              repo_name
+      cloned_path = File.join MarkusConfigurator.markus_config_repository_storage,
+                              repo_name
+      remote = Rugged::Repository.init_at(remote_path, bare: true)
 
-      # Grab the repo in question, if it does not exist, create it
-      repo = ga_repo.config.get_repo(repo_name)
-      if repo.nil?
-        # Generate new repo since this repo hasn't been created yet
-        repo = Gitolite::Config::Repo.new(repo_name)
-      end
-
-      # Add permissions for git user
-      repo.add_permission('RW+', '', 'vagrant')
-
-      # Add the repo to the gitolite admin config
-      conf.add_repo(repo)
-
-      # Readd the 'git' public key to the gitolite admin repo after changes
-      admin_key = Gitolite::SSHKey.from_file(
-        GITOLITE_SETTINGS[:public_key])
-      ga_repo.add_key(admin_key)
-
-      # Stage and push the changes to the gitolite admin repo
-      ga_repo.save_and_apply
-
-      # Repo is created by gitolite, proceed to clone it in
-      # the repository storage location
-      cloned_repo = Git.clone(
-        'git@localhost:' + repo_name, MarkusConfigurator.markus_config_repository_storage + '/' + repo_name)
+      cloned_repo = Git.clone('file://' + remote_path, cloned_path)
 
       # Lets make some sample files and the new master branch
       cloned_repo.reset
       cloned_repo.branch('master')
 
-      repo = Rugged::Repository.discover(MarkusConfigurator.markus_config_repository_storage + '/' + repo_name)
+      repo = Rugged::Repository.discover(cloned_path)
 
       # Do an initial commit with a README to create index.
       file_path_for_readme = File.join(repo.workdir, 'README.md')
@@ -374,7 +379,7 @@ module Repository
 
     # Adds a user with given permissions to the repository
     def add_user(user_id, permissions)
-
+      return
       if @repos_admin # Are we admin?
         ga_repo = Gitolite::GitoliteAdmin.new(
           MarkusConfigurator.markus_config_repository_storage +
@@ -455,6 +460,8 @@ module Repository
     end
 
     def get_permissions(user_id)
+      return Repository::Permission::READ_WRITE
+
       if @repos_admin # Are we admin?
         # Adds a user with given permissions to the repository
         ga_repo = Gitolite::GitoliteAdmin.new(
@@ -510,7 +517,7 @@ module Repository
       end
 
       # TODO Remove with gitolite
-      GitRepository.__set_all_permissions_gitolite
+      # GitRepository.__set_all_permissions_gitolite
     end
 
     def self.__set_all_permissions_gitolite
@@ -628,7 +635,7 @@ module Repository
       # - copy permissions from repo
       # - remove repo from config and save and apply
       # - add again permissions not removed
-
+      return
       if @repos_admin # Are we admin?
         # Adds a user with given permissions to the repository
         ga_repo = Gitolite::GitoliteAdmin.new(
@@ -694,7 +701,7 @@ module Repository
     end
 
     def self.add_user(user_id, permissions, repo_name)
-
+      return
       # Adds a user with given permissions to the repository
       unless File.exist?(MarkusConfigurator.markus_config_repository_permission_file)
         # create file if not existent
@@ -732,6 +739,7 @@ module Repository
     # Sets permissions over several repositories. Use set_permissions to set
     # permissions on a single repository.
     def self.set_bulk_permissions(repo_names, user_id_permissions_map)
+      return
       # Check if configuration is in order
       if MarkusConfigurator.markus_config_repository_admin?.nil?
         raise ConfigurationError.new(
@@ -871,8 +879,9 @@ module Repository
       when "RW"
         return Repository::Permission::READ_WRITE
       when "RW+"
-        return Repository::Permission::READ_WRITE
-      else raise "Unknown permissions"
+        cloned_repo = Rugged::Repository.new(cloned_path)
+
+        else raise "Unknown permissions"
       end # end case
     end
 
