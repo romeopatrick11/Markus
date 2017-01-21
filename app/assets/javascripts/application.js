@@ -4,9 +4,12 @@
 // It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
 // the compiled file.
 //
-//= require jquery
-//= require jquery-ui
+//= require jquery3
 //= require jquery_ujs
+//= require jquery-ui/widgets/datepicker
+//= require jquery-ui/widgets/draggable
+//= require jquery-ui/widgets/sortable
+//= require jquery-ui/widgets/tabs
 //= require jquery.easyModal
 //= require smart_poll
 //= require_tree ./ReactComponents
