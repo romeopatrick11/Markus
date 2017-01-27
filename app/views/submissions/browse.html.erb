@@ -1,4 +1,6 @@
+<script type="text/jsx">
 <%= render partial: 'submissions_table', formats: [:'js.jsx'], handlers: [:erb] %>
+</script>
 
 <% content_for :title do %>
   <% if @assignment.is_peer_review? %>

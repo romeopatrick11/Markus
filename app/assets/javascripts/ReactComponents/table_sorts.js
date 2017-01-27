@@ -13,6 +13,9 @@ function compare_gradebox(a, b) {
 
 function compare_anchor_text(a, b) {
   function parse_anchor(a) {
+    if (a._isReactElement) {
+      a = React.renderToString(a);
+    }
     var is_anchor = a.indexOf('<a') >= 0;
     if (is_anchor) {
       var open_tag_end = a.indexOf('>', a.indexOf('<a'));

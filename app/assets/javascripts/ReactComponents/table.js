@@ -558,7 +558,7 @@ function sort_by_column(data, column, direction, compare) {
       return a.toLowerCase().replace(' ', '');
     } else if (a.hasOwnProperty('props')) {
       // Is a react Grade Box
-      if (a.props.hasOwnProperty('grade_entry_column') || 
+      if (a.props.hasOwnProperty('grade_entry_column') ||
           a.props.hasOwnProperty('data-grade-entry-item-id')) {
         return a;
       // Contains image
@@ -568,7 +568,7 @@ function sort_by_column(data, column, direction, compare) {
       } else if (a.props.hasOwnProperty('dangerouslySetInnerHTML')) {
         return a.props.dangerouslySetInnerHTML.__html.toLowerCase();
       } else {
-        return React.renderComponentToString(a);
+        return React.renderToString(a);
       }
     }
     return a;
