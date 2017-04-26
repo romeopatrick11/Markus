@@ -9,7 +9,7 @@
 source 'https://rubygems.org'
 
 # Bundler requires these gems in all environments
-gem 'rails', '~> 5.0'
+gem 'rails', '~> 5.1.0.rc2'
 gem 'rubyzip'
 gem 'ya2yaml'
 gem 'i18n'
@@ -46,7 +46,8 @@ gem 'actionpack-xml_parser'
 gem 'actionview-encoded_mail_to', '~>1.0.4'
 gem 'activerecord-session_store'
 gem 'rails-perftest'
-gem 'arel', '~> 7.0'
+gem 'webpacker', github: 'rails/webpacker'
+gem 'arel'
 gem 'jbuilder', '~> 2.0'
 
 gem 'js-routes'
