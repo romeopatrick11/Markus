@@ -1,4 +1,4 @@
-class SubmissionsJob < ActiveJob::Base
+class SubmissionsJob < ApplicationJob
   queue_as MarkusConfigurator.markus_job_collect_submissions_queue_name
 
   before_enqueue do |_job|

@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -23,9 +22,8 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.datetime "updated_at"
     t.integer  "assignment_id",                        null: false
     t.integer  "annotation_texts_count",   default: 0
+    t.index ["assignment_id"], name: "index_annotation_categories_on_assignment_id", using: :btree
   end
-
-  add_index "annotation_categories", ["assignment_id"], name: "index_annotation_categories_on_assignment_id", using: :btree
 
   create_table "annotation_texts", force: :cascade do |t|
     t.text     "content"
@@ -34,9 +32,8 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.datetime "updated_at"
     t.integer  "creator_id"
     t.integer  "last_editor_id"
+    t.index ["annotation_category_id"], name: "index_annotation_texts_on_annotation_category_id", using: :btree
   end
-
-  add_index "annotation_texts", ["annotation_category_id"], name: "index_annotation_texts_on_annotation_category_id", using: :btree
 
   create_table "annotations", force: :cascade do |t|
     t.integer "line_start"
@@ -56,20 +53,18 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.integer "creator_id"
     t.string  "creator_type"
     t.integer "result_id"
+    t.index ["creator_type", "creator_id"], name: "index_annotations_on_creator_type_and_creator_id", using: :btree
+    t.index ["submission_file_id"], name: "index_annotations_on_submission_file_id", using: :btree
   end
-
-  add_index "annotations", ["creator_type", "creator_id"], name: "index_annotations_on_creator_type_and_creator_id", using: :btree
-  add_index "annotations", ["submission_file_id"], name: "index_annotations_on_submission_file_id", using: :btree
 
   create_table "assignment_files", force: :cascade do |t|
     t.integer  "assignment_id"
     t.string   "filename",      null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["assignment_id", "filename"], name: "index_assignment_files_on_assignment_id_and_filename", unique: true, using: :btree
+    t.index ["assignment_id"], name: "index_assignment_files_on_assignment_id", using: :btree
   end
-
-  add_index "assignment_files", ["assignment_id", "filename"], name: "index_assignment_files_on_assignment_id_and_filename", unique: true, using: :btree
-  add_index "assignment_files", ["assignment_id"], name: "index_assignment_files_on_assignment_id", using: :btree
 
   create_table "assignment_stats", force: :cascade do |t|
     t.integer "assignment_id"
@@ -121,9 +116,8 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.boolean  "enable_student_tests",             default: false, null: false
     t.boolean  "non_regenerating_tokens",          default: false
     t.boolean  "scanned_exam",                     default: false, null: false
+    t.index ["short_identifier"], name: "index_assignments_on_short_identifier", unique: true, using: :btree
   end
-
-  add_index "assignments", ["short_identifier"], name: "index_assignments_on_short_identifier", unique: true, using: :btree
 
   create_table "checkbox_criteria", force: :cascade do |t|
     t.string   "name",                                                           null: false
@@ -136,9 +130,8 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.boolean  "peer_visible",                                   default: false, null: false
     t.datetime "created_at",                                                     null: false
     t.datetime "updated_at",                                                     null: false
+    t.index ["assignment_id", "name"], name: "index_checkbox_criteria_on_assignment_id_and_name", unique: true, using: :btree
   end
-
-  add_index "checkbox_criteria", ["assignment_id", "name"], name: "index_checkbox_criteria_on_assignment_id_and_name", unique: true, using: :btree
 
   create_table "criteria_assignment_files_joins", force: :cascade do |t|
     t.integer  "criterion_id",       null: false
@@ -155,10 +148,9 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "assignment_id"
+    t.index ["criterion_id"], name: "index_criterion_ta_associations_on_criterion_id", using: :btree
+    t.index ["ta_id"], name: "index_criterion_ta_associations_on_ta_id", using: :btree
   end
-
-  add_index "criterion_ta_associations", ["criterion_id"], name: "index_criterion_ta_associations_on_criterion_id", using: :btree
-  add_index "criterion_ta_associations", ["ta_id"], name: "index_criterion_ta_associations_on_ta_id", using: :btree
 
   create_table "exam_templates", force: :cascade do |t|
     t.integer  "assignment_id"
@@ -166,9 +158,8 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.integer  "num_pages",     null: false
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.index ["assignment_id"], name: "index_exam_templates_on_assignment_id", using: :btree
   end
-
-  add_index "exam_templates", ["assignment_id"], name: "index_exam_templates_on_assignment_id", using: :btree
 
   create_table "extra_marks", force: :cascade do |t|
     t.integer  "result_id"
@@ -177,9 +168,8 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "unit"
+    t.index ["result_id"], name: "index_extra_marks_on_result_id", using: :btree
   end
-
-  add_index "extra_marks", ["result_id"], name: "index_extra_marks_on_result_id", using: :btree
 
   create_table "feedback_files", force: :cascade do |t|
     t.string   "filename",      null: false
@@ -188,9 +178,8 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.integer  "submission_id"
+    t.index ["submission_id"], name: "index_feedback_files_on_submission_id", using: :btree
   end
-
-  add_index "feedback_files", ["submission_id"], name: "index_feedback_files_on_submission_id", using: :btree
 
   create_table "flexible_criteria", force: :cascade do |t|
     t.string   "name",                                                           null: false
@@ -203,19 +192,17 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.integer  "assigned_groups_count",                          default: 0
     t.boolean  "ta_visible",                                     default: true,  null: false
     t.boolean  "peer_visible",                                   default: false, null: false
+    t.index ["assignment_id", "name"], name: "index_flexible_criteria_on_assignment_id_and_name", unique: true, using: :btree
+    t.index ["assignment_id"], name: "index_flexible_criteria_on_assignment_id", using: :btree
   end
-
-  add_index "flexible_criteria", ["assignment_id", "name"], name: "index_flexible_criteria_on_assignment_id_and_name", unique: true, using: :btree
-  add_index "flexible_criteria", ["assignment_id"], name: "index_flexible_criteria_on_assignment_id", using: :btree
 
   create_table "grace_period_deductions", force: :cascade do |t|
     t.integer  "membership_id"
     t.integer  "deduction"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["membership_id"], name: "index_grace_period_deductions_on_membership_id", using: :btree
   end
-
-  add_index "grace_period_deductions", ["membership_id"], name: "index_grace_period_deductions_on_membership_id", using: :btree
 
   create_table "grade_entry_forms", force: :cascade do |t|
     t.string   "short_identifier", null: false
@@ -226,9 +213,8 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.datetime "updated_at"
     t.boolean  "show_total"
     t.boolean  "is_hidden"
+    t.index ["short_identifier"], name: "index_grade_entry_forms_on_short_identifier", unique: true, using: :btree
   end
-
-  add_index "grade_entry_forms", ["short_identifier"], name: "index_grade_entry_forms_on_short_identifier", unique: true, using: :btree
 
   create_table "grade_entry_items", force: :cascade do |t|
     t.integer  "grade_entry_form_id"
@@ -238,9 +224,8 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.float    "out_of"
     t.integer  "position"
     t.boolean  "bonus",               default: false
+    t.index ["grade_entry_form_id", "name"], name: "index_grade_entry_items_on_grade_entry_form_id_and_name", unique: true, using: :btree
   end
-
-  add_index "grade_entry_items", ["grade_entry_form_id", "name"], name: "index_grade_entry_items_on_grade_entry_form_id_and_name", unique: true, using: :btree
 
   create_table "grade_entry_students", force: :cascade do |t|
     t.integer  "user_id"
@@ -249,9 +234,8 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.float    "total_grade"
+    t.index ["user_id", "grade_entry_form_id"], name: "index_grade_entry_students_on_user_id_and_grade_entry_form_id", unique: true, using: :btree
   end
-
-  add_index "grade_entry_students", ["user_id", "grade_entry_form_id"], name: "index_grade_entry_students_on_user_id_and_grade_entry_form_id", unique: true, using: :btree
 
   create_table "grade_entry_students_tas", force: :cascade do |t|
     t.integer "grade_entry_student_id"
@@ -264,9 +248,8 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.float    "grade"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["grade_entry_item_id", "grade_entry_student_id"], name: "index_grades_on_grade_entry_item_id_and_grade_entry_student_id", unique: true, using: :btree
   end
-
-  add_index "grades", ["grade_entry_item_id", "grade_entry_student_id"], name: "index_grades_on_grade_entry_item_id_and_grade_entry_student_id", unique: true, using: :btree
 
   create_table "grouping_queues", force: :cascade do |t|
     t.integer "submission_collector_id"
@@ -284,23 +267,20 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.integer  "notes_count",             default: 0
     t.integer  "criteria_coverage_count", default: 0
     t.boolean  "error_collecting",        default: false
+    t.index ["assignment_id", "group_id"], name: "groupings_u1", unique: true, using: :btree
   end
-
-  add_index "groupings", ["assignment_id", "group_id"], name: "groupings_u1", unique: true, using: :btree
 
   create_table "groupings_tags", id: false, force: :cascade do |t|
     t.integer "tag_id",      null: false
     t.integer "grouping_id", null: false
+    t.index ["tag_id", "grouping_id"], name: "index_groupings_tags_on_tag_id_and_grouping_id", unique: true, using: :btree
   end
-
-  add_index "groupings_tags", ["tag_id", "grouping_id"], name: "index_groupings_tags_on_tag_id_and_grouping_id", unique: true, using: :btree
 
   create_table "groups", force: :cascade do |t|
     t.string "group_name", limit: 30
     t.string "repo_name"
+    t.index ["group_name"], name: "groups_name_unique", unique: true, using: :btree
   end
-
-  add_index "groups", ["group_name"], name: "groups_name_unique", unique: true, using: :btree
 
   create_table "job_messengers", force: :cascade do |t|
     t.string   "job_id"
@@ -308,9 +288,8 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.string   "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["job_id"], name: "index_job_messengers_on_job_id", using: :btree
   end
-
-  add_index "job_messengers", ["job_id"], name: "index_job_messengers_on_job_id", using: :btree
 
   create_table "key_pairs", force: :cascade do |t|
     t.integer  "user_id"
@@ -342,11 +321,10 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "markable_type"
+    t.index ["markable_id", "result_id", "markable_type"], name: "marks_u1", unique: true, using: :btree
+    t.index ["markable_id"], name: "index_marks_on_markable_id", using: :btree
+    t.index ["result_id"], name: "index_marks_on_result_id", using: :btree
   end
-
-  add_index "marks", ["markable_id", "result_id", "markable_type"], name: "marks_u1", unique: true, using: :btree
-  add_index "marks", ["markable_id"], name: "index_marks_on_markable_id", using: :btree
-  add_index "marks", ["result_id"], name: "index_marks_on_result_id", using: :btree
 
   create_table "memberships", force: :cascade do |t|
     t.integer  "user_id"
@@ -355,9 +333,8 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.datetime "updated_at"
     t.integer  "grouping_id",       null: false
     t.string   "type"
+    t.index ["grouping_id", "user_id"], name: "memberships_u1", unique: true, using: :btree
   end
-
-  add_index "memberships", ["grouping_id", "user_id"], name: "memberships_u1", unique: true, using: :btree
 
   create_table "notes", force: :cascade do |t|
     t.text     "notes_message", null: false
@@ -366,20 +343,18 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.datetime "updated_at"
     t.integer  "noteable_id",   null: false
     t.string   "noteable_type", null: false
+    t.index ["creator_id"], name: "index_notes_on_creator_id", using: :btree
   end
-
-  add_index "notes", ["creator_id"], name: "index_notes_on_creator_id", using: :btree
 
   create_table "peer_reviews", force: :cascade do |t|
     t.integer  "result_id",   null: false
     t.integer  "reviewer_id", null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["result_id", "reviewer_id"], name: "index_peer_reviews_on_result_id_and_reviewer_id", unique: true, using: :btree
+    t.index ["result_id"], name: "index_peer_reviews_on_result_id", using: :btree
+    t.index ["reviewer_id"], name: "index_peer_reviews_on_reviewer_id", using: :btree
   end
-
-  add_index "peer_reviews", ["result_id", "reviewer_id"], name: "index_peer_reviews_on_result_id_and_reviewer_id", unique: true, using: :btree
-  add_index "peer_reviews", ["result_id"], name: "index_peer_reviews_on_result_id", using: :btree
-  add_index "peer_reviews", ["reviewer_id"], name: "index_peer_reviews_on_reviewer_id", using: :btree
 
   create_table "periods", force: :cascade do |t|
     t.integer  "submission_rule_id"
@@ -389,9 +364,8 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.float    "hours"
     t.float    "interval"
     t.string   "submission_rule_type"
+    t.index ["submission_rule_id"], name: "index_periods_on_submission_rule_id", using: :btree
   end
-
-  add_index "periods", ["submission_rule_id"], name: "index_periods_on_submission_rule_id", using: :btree
 
   create_table "results", force: :cascade do |t|
     t.integer  "submission_id"
@@ -403,9 +377,8 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.float    "total_mark",                  default: 0.0
     t.datetime "remark_request_submitted_at"
     t.integer  "peer_review_id"
+    t.index ["peer_review_id"], name: "index_results_on_peer_review_id", using: :btree
   end
-
-  add_index "results", ["peer_review_id"], name: "index_results_on_peer_review_id", using: :btree
 
   create_table "rubric_criteria", force: :cascade do |t|
     t.string   "name",                                                           null: false
@@ -427,9 +400,8 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.integer  "assigned_groups_count",                          default: 0
     t.boolean  "ta_visible",                                     default: true,  null: false
     t.boolean  "peer_visible",                                   default: false, null: false
+    t.index ["assignment_id", "name"], name: "rubric_critera_index_1", unique: true, using: :btree
   end
-
-  add_index "rubric_criteria", ["assignment_id", "name"], name: "rubric_critera_index_1", unique: true, using: :btree
 
   create_table "section_due_dates", force: :cascade do |t|
     t.datetime "due_date"
@@ -448,10 +420,9 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["session_id"], name: "index_sessions_on_session_id", using: :btree
+    t.index ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
   end
-
-  add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", using: :btree
-  add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
 
   create_table "submission_collectors", force: :cascade do |t|
     t.integer "child_pid"
@@ -465,19 +436,17 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.string  "path",             default: "/",   null: false
     t.boolean "is_converted",     default: false
     t.boolean "error_converting", default: false
+    t.index ["filename"], name: "index_submission_files_on_filename", using: :btree
+    t.index ["submission_id"], name: "index_submission_files_on_submission_id", using: :btree
   end
-
-  add_index "submission_files", ["filename"], name: "index_submission_files_on_filename", using: :btree
-  add_index "submission_files", ["submission_id"], name: "index_submission_files_on_submission_id", using: :btree
 
   create_table "submission_rules", force: :cascade do |t|
     t.integer  "assignment_id",                                  null: false
     t.string   "type",          default: "NoLateSubmissionRule"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["assignment_id"], name: "index_submission_rules_on_assignment_id", using: :btree
   end
-
-  add_index "submission_rules", ["assignment_id"], name: "index_submission_rules_on_assignment_id", using: :btree
 
   create_table "submissions", force: :cascade do |t|
     t.integer  "grouping_id"
@@ -488,17 +457,15 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.datetime "revision_timestamp",       null: false
     t.text     "remark_request"
     t.datetime "remark_request_timestamp"
+    t.index ["grouping_id"], name: "index_submissions_on_grouping_id", using: :btree
   end
-
-  add_index "submissions", ["grouping_id"], name: "index_submissions_on_grouping_id", using: :btree
 
   create_table "tags", force: :cascade do |t|
     t.string  "name",        null: false
     t.string  "description"
     t.integer "user_id"
+    t.index ["user_id"], name: "index_tags_on_user_id", using: :btree
   end
-
-  add_index "tags", ["user_id"], name: "index_tags_on_user_id", using: :btree
 
   create_table "template_divisions", force: :cascade do |t|
     t.integer  "exam_template_id"
@@ -508,9 +475,8 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
     t.integer  "criteria_assignment_files_join_id"
+    t.index ["exam_template_id"], name: "index_template_divisions_on_exam_template_id", using: :btree
   end
-
-  add_index "template_divisions", ["exam_template_id"], name: "index_template_divisions_on_exam_template_id", using: :btree
 
   create_table "test_results", force: :cascade do |t|
     t.integer  "test_script_result_id"
@@ -533,9 +499,8 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.integer  "submission_id"
     t.integer  "repo_revision"
     t.integer  "requested_by_id"
+    t.index ["requested_by_id"], name: "index_test_script_results_on_requested_by_id", using: :btree
   end
-
-  add_index "test_script_results", ["requested_by_id"], name: "index_test_script_results_on_requested_by_id", using: :btree
 
   create_table "test_scripts", force: :cascade do |t|
     t.integer "assignment_id",           null: false
@@ -554,18 +519,16 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.string  "display_actual_output",   null: false
     t.integer "criterion_id"
     t.string  "criterion_type"
+    t.index ["assignment_id", "seq_num"], name: "index_test_scripts_on_assignment_id_and_seq_num", using: :btree
+    t.index ["criterion_type", "criterion_id"], name: "index_test_scripts_on_criterion_type_and_criterion_id", using: :btree
   end
-
-  add_index "test_scripts", ["assignment_id", "seq_num"], name: "index_test_scripts_on_assignment_id_and_seq_num", using: :btree
-  add_index "test_scripts", ["criterion_type", "criterion_id"], name: "index_test_scripts_on_criterion_type_and_criterion_id", using: :btree
 
   create_table "test_support_files", force: :cascade do |t|
     t.string  "file_name",     null: false
     t.integer "assignment_id", null: false
     t.text    "description",   null: false
+    t.index ["assignment_id"], name: "index_test_files_on_assignment_id", using: :btree
   end
-
-  add_index "test_support_files", ["assignment_id"], name: "index_test_files_on_assignment_id", using: :btree
 
   create_table "tokens", force: :cascade do |t|
     t.integer  "grouping_id"
@@ -585,10 +548,9 @@ ActiveRecord::Schema.define(version: 20170219132130) do
     t.string   "api_key"
     t.integer  "section_id"
     t.integer  "notes_count",   default: 0
+    t.index ["api_key"], name: "index_users_on_api_key", unique: true, using: :btree
+    t.index ["user_name"], name: "index_users_on_user_name", unique: true, using: :btree
   end
-
-  add_index "users", ["api_key"], name: "index_users_on_api_key", unique: true, using: :btree
-  add_index "users", ["user_name"], name: "index_users_on_user_name", unique: true, using: :btree
 
   add_foreign_key "annotation_texts", "annotation_categories", name: "fk_annotation_labels_annotation_categories", on_delete: :cascade
   add_foreign_key "annotations", "annotation_texts", name: "fk_annotations_annotation_texts"

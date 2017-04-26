@@ -5,7 +5,7 @@ require 'prawn/qrcode'
 require 'zxing'
 require 'rmagick'
 
-class ExamTemplate < ActiveRecord::Base
+class ExamTemplate < ApplicationRecord
   belongs_to :assignment
   validates :assignment, :filename, :num_pages, presence: true
   validates :num_pages, numericality: { greater_than_or_equal_to: 0,

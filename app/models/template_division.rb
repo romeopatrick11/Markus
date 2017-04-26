@@ -1,4 +1,4 @@
-class TemplateDivision < ActiveRecord::Base
+class TemplateDivision < ApplicationRecord
   belongs_to :exam_template
   belongs_to :criteria_assignment_files_join, dependent: :destroy
 

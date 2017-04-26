@@ -1,4 +1,4 @@
-class SubmissionRule < ActiveRecord::Base
+class SubmissionRule < ApplicationRecord
 
   class InvalidRuleType < Exception
     def initialize(rule_name)
@@ -49,7 +49,7 @@ class SubmissionRule < ActiveRecord::Base
       @get_collection_time[section.id] = calculate_collection_time(section)
     end
   end
-  
+
   def calculate_collection_time(section=nil)
     assignment.section_due_date(section) + hours_sum.hours
   end

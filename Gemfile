@@ -9,7 +9,7 @@
 source 'https://rubygems.org'
 
 # Bundler requires these gems in all environments
-gem 'rails', '~> 4.2.0'
+gem 'rails', '~> 5.0'
 gem 'rubyzip'
 gem 'ya2yaml'
 gem 'i18n'
@@ -19,18 +19,16 @@ gem 'activerecord-import'
 gem 'upsert'
 gem 'auto_complete'
 gem 'best_in_place'
-gem 'coffee-script'
 gem 'rugged'
 gem 'jquery-rails'
-gem 'responders', '~> 2.0'
-gem 'sprockets', '~> 2.12.0'
+gem 'responders'
+gem 'sprockets', '4.0.0.beta2'
 gem 'rails-html-sanitizer'
 gem 'rails-deprecated_sanitizer'
 gem 'redcarpet', '~> 3.0.0'
 
 gem 'tilt', '~> 1.3.7'
-gem 'sass-rails',   '5.0.0.beta1'
-gem 'coffee-rails', '~> 4.0.0'
+gem 'sass-rails'
 gem 'uglifier',     '>= 1.3.0'
 gem 'execjs'
 gem 'libv8'
@@ -43,13 +41,12 @@ gem 'net-ssh'
 gem 'net-scp'
 
 gem 'actionpack-action_caching'
-gem 'actionpack-page_caching', '~>1.0.0'
-gem 'actionpack-xml_parser', '~>1.0.0'
+gem 'actionpack-page_caching'
+gem 'actionpack-xml_parser'
 gem 'actionview-encoded_mail_to', '~>1.0.4'
-gem 'activerecord-session_store', '~>0.1.0'
-gem 'rails-observers', '~>0.1.1'
-gem 'rails-perftest', '~>0.0.2'
-gem 'arel', '~>6.0.2'
+gem 'activerecord-session_store'
+gem 'rails-perftest'
+gem 'arel', '~> 7.0'
 gem 'jbuilder', '~> 2.0'
 
 gem 'js-routes'
@@ -93,7 +90,6 @@ group :development do
   gem 'binding_of_caller'
   gem 'spring'
   gem 'debugger', :platforms => :mri_19
-  gem 'quiet_assets'
   gem 'bullet'
 end
 
@@ -106,6 +102,7 @@ group :test do
   gem 'time-warp'
   gem 'database_cleaner'
   gem 'shoulda-callback-matchers', '~> 1.1.1'
+  gem 'rails-controller-testing'
 end
 
 # Gems needed (wanted) for both development and test can be

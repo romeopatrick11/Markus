@@ -1,4 +1,4 @@
-class CreateIndividualGroupsForAllStudentsJob < ActiveJob::Base
+class CreateIndividualGroupsForAllStudentsJob < ApplicationJob
   queue_as MarkusConfigurator.markus_job_create_individual_groups_queue_name
 
   before_enqueue do |_job|

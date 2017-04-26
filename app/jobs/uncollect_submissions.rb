@@ -1,4 +1,4 @@
-class UncollectSubmissions < ActiveJob::Base
+class UncollectSubmissions < ApplicationJob
   queue_as MarkusConfigurator.markus_job_uncollect_submissions_queue_name
 
   before_enqueue do |_job|

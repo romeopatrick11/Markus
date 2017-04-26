@@ -43,31 +43,31 @@
 #   to the student.
 ##############################################################
 
-class TestScript < ActiveRecord::Base
+class TestScript < ApplicationRecord
   belongs_to :assignment
   has_many :test_script_results, dependent: :delete_all
-  belongs_to :criterion, polymorphic: true
+  belongs_to :criterion, polymorphic: true, optional: true
 
   # Run sanitize_filename before saving to the database
   before_save :sanitize_filename
-  
+
   # Upon update, if replacing a file with a different name, delete the old file first
   before_update :delete_old_file
-  
+
   # Run write_file after saving to the database
   after_save :write_file
-  
+
   # Run delete_file method after removal from db
   after_destroy :delete_file
 
   validates_presence_of :assignment
   validates_associated :assignment
-  
+
   validates_presence_of :seq_num
   validates_presence_of :script_name
   validates_presence_of :max_marks
   validates_presence_of :description, if: "description.nil?"
-  
+
   # validates the uniqueness of script_name for the same assignment
   validates_each :script_name do |record, attr, value|
     # Extract script_name
@@ -93,7 +93,7 @@ class TestScript < ActiveRecord::Base
   validates_presence_of :display_input
   validates_presence_of :display_expected_output
   validates_presence_of :display_actual_output
-  
+
   display_option = %w(do_not_display display_after_submission display_after_collection)
   validates_inclusion_of :display_description, in: display_option
   validates_inclusion_of :display_run_status, in: display_option
@@ -101,10 +101,10 @@ class TestScript < ActiveRecord::Base
   validates_inclusion_of :display_marks_earned, in: display_option
   validates_inclusion_of :display_expected_output, in: display_option
   validates_inclusion_of :display_actual_output, in: display_option
-  
+
   # All callback methods are protected methods
   protected
-  
+
   # Save the full test file path and sanitize the filename for the database
   def sanitize_filename
     # Execute only when full file path exists (indicating a new File object)

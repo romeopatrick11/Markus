@@ -4,7 +4,7 @@ require 'encoding'
 # A grade entry form has many columns which represent the questions and their total
 # marks (i.e. GradeEntryItems) and many rows which represent students and their
 # marks on each question (i.e. GradeEntryStudents).
-class GradeEntryForm < ActiveRecord::Base
+class GradeEntryForm < ApplicationRecord
   has_many                  :grade_entry_items,
                             -> { order(:position) },
                             dependent: :destroy

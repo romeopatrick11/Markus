@@ -1,4 +1,4 @@
-class Mark < ActiveRecord::Base
+class Mark < ApplicationRecord
   # When a mark is created, or updated, we need to make sure that that
   # Result has not been released to students
   before_save :ensure_not_released_to_students

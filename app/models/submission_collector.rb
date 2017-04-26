@@ -16,7 +16,7 @@
 #
 # Both queues are stored in the database to allow for easy parent-child
 # process communication bypassing the need for pipes or signals.
-class SubmissionCollector < ActiveRecord::Base
+class SubmissionCollector < ApplicationRecord
 
   has_many :grouping_queues, dependent: :destroy
 

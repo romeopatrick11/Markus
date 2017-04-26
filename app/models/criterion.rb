@@ -1,6 +1,6 @@
 # The abstract base class that defines common behavior for all types of
 # criterion.
-class Criterion < ActiveRecord::Base
+class Criterion < ApplicationRecord
   has_many :criteria_assignment_files_joins,
            as: :criterion,
            dependent: :destroy

@@ -1,6 +1,6 @@
 require 'csv_invalid_line_error'
 
-class Assignment < ActiveRecord::Base
+class Assignment < ApplicationRecord
   include RepositoryHelper
 
   MIN_PEER_REVIEWS_PER_GROUP = 1
@@ -47,7 +47,7 @@ class Assignment < ActiveRecord::Base
 
   # Assignments can now refer to themselves, where this is null if there
   # is no parent (the same holds for the child peer reviews)
-  belongs_to :parent_assignment, class_name: 'Assignment', inverse_of: :pr_assignment
+  belongs_to :parent_assignment, class_name: 'Assignment', inverse_of: :pr_assignment, optional: true
   has_one :pr_assignment, class_name: 'Assignment', foreign_key: :parent_assignment_id, inverse_of: :parent_assignment
   has_many :peer_reviews, through: :groupings
   has_many :pr_peer_reviews, through: :parent_assignment, source: :peer_reviews
@@ -770,7 +770,7 @@ class Assignment < ActiveRecord::Base
 
   def get_num_marked(ta_id = nil)
     if ta_id.nil?
-      groupings.count(marking_completed: true)
+      groupings.to_a.count(&:marking_completed?)
     else
       n = 0
       ta_memberships.includes(grouping: [{current_submission_used: [:submitted_remark, :results]}]).where(user_id: ta_id).find_each do |x|
@@ -922,7 +922,7 @@ class Assignment < ActiveRecord::Base
     end
     true
   end
-  
+
   # Return a repository object, if possible
   def repo
     repo_loc = File.join(MarkusConfigurator.markus_config_repository_storage, repository_name)

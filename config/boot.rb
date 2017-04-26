@@ -1,18 +1,13 @@
-require 'rubygems'
+ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../Gemfile', __dir__)
 
-# Set up gems listed in the Gemfile.
-ENV['BUNDLE_GEMFILE'] ||= File.expand_path(File.join('..', '..', 'Gemfile'), __FILE__)
-
-require 'bundler/setup' if File.exists?(ENV['BUNDLE_GEMFILE'])
-
-require 'yaml'
-require 'csv'
-
+require 'bundler/setup' # Set up gems listed in the Gemfile.
 require 'rails/commands/server'
+
 module Rails
   class Server
+    alias :default_options_bk :default_options
     def default_options
-      super.merge(Host: '0.0.0.0', Port: 3000)
+      default_options_bk.merge!(Host: '0.0.0.0')
     end
   end
 end

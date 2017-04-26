@@ -4,6 +4,9 @@ Markus::Application.configure do
 
   # Other Precompiled Assets
   config.assets.precompile += %w(pdfjs.js)
+  config.assets.debug = false
+  # Turn off asset pipeline log
+  config.assets.quiet = true
 
   # In the development environment your application's code is reloaded on
   # every request.  This slows down response time but is perfect for development
