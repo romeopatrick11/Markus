@@ -109,7 +109,8 @@ class Submission < ActiveRecord::Base
 
     result = get_latest_result
     all_marks_by_tests = true
-    result.marks.each do |mark| # Assumes marks already exist
+    grouping.assignment.get_criteria(:ta).each do |criterion|
+      mark = result.marks.find_or_create_by(criterion_id: criterion.id, criterion_type: criterion.class.to_s)
       marks_earned = 0
       mark_total = 0
       mark.markable.test_scripts.each do |test_script|
