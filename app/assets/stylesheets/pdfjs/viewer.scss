@@ -17,7 +17,7 @@
   padding: 0;
   margin: 0;
   width: 100%;
-  height: 100%;
+  flex: 1;
   cursor: crosshair;
 
   /* Font size is needed to make the activity bar the correct size. */
@@ -36,7 +36,6 @@
 #outerContainer input,
 #outerContainer button,
 #outerContainer select {
-  font: message-box;
   outline: none;
 }
 

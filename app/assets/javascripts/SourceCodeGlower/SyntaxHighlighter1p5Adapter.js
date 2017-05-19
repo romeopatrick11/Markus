@@ -97,4 +97,7 @@ SyntaxHighlighter1p5Adapter.prototype.applyMods = function() {
   // Move the tool bar to the new div *outside* of the SyntaxHighlighter pane
   var ordered_list_of_code = document.getElementsByClassName('dp-highlighter')[0].children[1];
   ordered_list_of_code.addClass('code_scroller');
+
+  // Delete tool bar
+  document.getElementsByClassName('dp-highlighter')[0].children[0].remove()
 }

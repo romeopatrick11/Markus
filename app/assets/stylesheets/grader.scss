@@ -220,6 +220,7 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  padding-top: 1em;
 
   .annotation_highlighted_text {
     background-color: #f99;
@@ -259,9 +260,7 @@
 
 #annotation_menu, #file_selector_menu, #feedback_file_selector_menu {
   background: #b7d3ec;
-  border-radius: $radius $radius 0 0;
   display: table;
-  margin: 0 0 1em 0;
   padding: 0.5em;
   width: 100%;
 }

@@ -86,12 +86,27 @@
   z-index: auto !important;
 }
 
-.expanded_view {
-  z-index: auto !important;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  padding: 0.5em !important;
+@media screen {
+  .expanded_view {
+    z-index: auto !important;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 0 !important;
+
+    .tab-pane {
+      padding: 0;
+
+      .ui-tabs-panel {
+        padding: 0;
+        border-radius: 0;
+      }
+    }
+
+    #outerContainer {
+      flex: 1;
+    }
+  }
 }
 
 .wrapLeft {
